@@ -1,121 +1,134 @@
-# Make your own Codewars
+# How many briefcases?
 
-In this workshop, you'll create your own programming challenge for others to solve, similar to the ones you've tackled on Codewars. You'll write unit tests to validate solutions. Then you can share your challenge with other bootcampers for them to solve. If a submitted solution passes all your tests, it will be considered a correct solution - just like on Codewars. This is a great chance to get creative and come up with a programming challenge to stump your peers!
+This is the app no one knew they needed, until now!
 
-## 💡 OBJECTIVES FOR THE WORKSHOP
+You are tasked to write a function to determine how many briefcases are required to hold a given currency.
 
-Here's a glimpse of what you'll be achieving by the end of this workshop:
+---
 
-- Clearly describing a problem/task that you want others to solve
-- Writing unit tests to check whether their solution to your task is correct
-- Present your project plan, story, and anything else you feel supports your creation process and final outcome in a document
+## Required Information / Brainstorming
 
-## 🎟️ TICKETS
+- The currency is US Dollars, in $100 dollar bills
+- The volume of the briefcase provided is (25" x 18" x 4")
+- Assuming all US$100 bills, an average-sized briefcase (25" x 18" x 4") could theoretically fit about US$2,400,000.
 
-Time to dive into action! 🏊‍♂️ Here's what you'll be working on:
+- Rough workings / proof of concept
 
-### 🎫 Ticket 1 - Setup
+- 0.00075 per bill \_ $2,400,000 / 1800 = 1 briefcase
+- 0.00075 per bill \_ $500,000,000 / 1800 = x briefcase
 
-Install Vitest and optionally set up an NPM `test` script that conveniently runs your tests.
+---
 
-You will be making one kata each, but you will be in development teams. The aim is to co-elevate each other. There are several ways you can and should look to help each other:
+## Running Tests
 
-- Brainstorming: Helping each make your ideas better, and giving feedback to each other to add different perspectives and improve the end product
-- Planning: You can help validate each others plans, and sense check in a team review the direction of your products
-- Check-ins: Regular team stand-ups / check-ins will help make sure you are building and making progress together
-- Support: You should aim to help each other overcome issues if one of your team is stuck and cannot Google their way out of it
-- Testing: You can act as a first line user test for each others katas. You might find it a good idea to book in regular checkpoints to demo to each other and get initial feedback in quick bursts, making sure you can build in and adapt to any useful feedback before official release of your katas
+To run tests, run the following command
 
-### 🎫 Ticket 2 - Plan your kata
-
-Attack this as you would any other problem - plan, plan, plan and use our agile approach to create steps that allow you to build MVPs and incrementally reach your stretch goals. Brainstorm options with a technique like Disney Ideation. Once you have a compelling challenge and story idea, start breaking it down. Think about the goals of your challenge, and the scenarios you could provide to test if people have reached those goals. Provide any examples or additional details that are necessary for someone taking on your kata to understand the problem, but don't give away so much that it removes the challenge. You want to strike a balance - not too vague but not spoon-feeding the solution either.
-
-Write your kata's scenario in a comment in `main.js` and include the start of an exported function that your audience will use to solve it (like you've seen on the katas you've done before). If it's useful to see an example:
-
-```js
-/**
- * Hello challenger! Your task is to write a function named `transformLength` which takes in a string and returns 1 if the length of the string is even and otherwise -1.
- *
- * Your implementation should handle strings whose length is between 0 (inclusive) and 2500 (inclusive).
- *
- * A few examples:
- *    `transformLength("table")` should return -1 as the length of "table" is not even
- *    `transformLength("wizard")` should return 1 as the length of "wizard" is even
- */
-export function transformLength(string) {
-  // Good luck!
-}
+```bash
+  npm run test
 ```
 
-ℹ️ The reason for leaving the function body empty is that you want the people solving your kata to write their own implementation from scratch. Your role is to provide the overall problem statement and function skeleton. The solving and coding is up to them! Leaving an incomplete skeleton function helps point them in the right direction without giving away a full working solution.
+## MVP1
 
-### 🎫 Ticket 3 - Write your kata
+$2,400,000 fits in one briefcase, in $100 bills. How many briefcases are required to hold a given amount of currency?
 
-When drafting your test cases, consider the different inputs that could be passed to the solution function and any edge cases you want to account for. You could put into practice tools such as Equivalency Partitioning, Boundary Value Analysis, and Decision Tables if its useful. Think of test values that will thoroughly cover the expected functionality. The number of tests is up to you, but aim for sufficient coverage to validate correctness.
-
-Since you'll write tests before seeing people's solutions, focus on defining expected outputs for given inputs, without assumptions about how people actually wrote the code. You're testing for outcomes. You could follow a TDD workflow - write a failing test, then temporarily add code to pass it. Just be sure to remove the solution code before sharing the kata. This helps ensure your tests fail when logic is missing or incorrect and pass when implemented properly.
-
-If it's useful to see an example (continuing the `checkLength` example from earlier):
+Example of tests
 
 ```js
 import { test, expect } from "vitest";
-import { checkLength } from "./main.js";
+import { howManyCases } from "./main.js";
 
-test("should return -1 for strings with an odd length", () => {
-  const expected = -1;
-  const actual = checkLength("table");
+test("Test should fail - initial test", () => {});
+
+test("should return 1 case when given $2,400,000", () => {
+  const expected = 1;
+  const actual = howManyCases(2400000);
   expect(actual).toBe(expected);
 });
 
-test("should return 1 for strings with an even length", () => {
-  const expected = 1;
-  const actual = checkLength("wizard");
+test("should return 2 cases when given $4,800,000", () => {
+  const expected = 2;
+  const actual = howManyCases(4800000);
   expect(actual).toBe(expected);
 });
 ```
 
-🎯 At this stage you should have a description of the problem in `main.js` and some tests in `main.test.js`.
-
-### 🎫 Ticket 4 - Check your tests
-
-To verify your tests, temporarily add a working implementation to the solution function in `main.js`. Check that the tests fail before implementation and pass when the function is coded correctly. This validates that your tests accurately check for both incorrect and correct solutions. Remember to remove the solution code afterwards before sharing the kata.
-
-If it's useful to see an example (continuing the `checkLength` example from earlier):
+Example of function used to pass the test
 
 ```js
-export function checkLength(string) {
-  // Temporarily added the line below to check if tests pass, but will remove it before committing and pushing.
-  return string.length % 2 === 0 ? 1 : -1;
+export function howManyCases(number) {
+  // create a variable for how many $100 dollar bills fit in a case
+  const fullCase = 2400000;
+  // number divided by 2400000
+  return number / fullCase;
 }
 ```
 
-### 🎫 Ticket 5 - Share your kata
+---
 
-Before pushing your final kata repository, be sure to remove any solution code you added for test validation. You want to provide only the kata description, skeleton function, and test cases - no actual solutions. Once ready, share your repo link in the [learn.schoolofcode.co.uk Hackathon Channel](https://learn.schoolofcode.co.uk/path-player?courseid=qa&unit=65d4885aeadffd5c31025ff6Unit) so other bootcampers can find it, clone it, implement solutions, and run your tests to check their progress. This allows them to solve the programming challenge you've created!
+## MVP2
 
-Share it with following format:
+$2,400,000 fits in one briefcase, in $100 bills. How many briefcases are required to hold a given amount of currency?
+The result must be in whole briefcases
 
+Example of tests
+
+```js
+import { test, expect } from "vitest";
+import { howManyWholeCases } from "./main.js";
+
+test("should return 1 case when given $2,400,000", () => {
+  const expected = 1;
+  const actual = howManyWholeCases(2400000);
+  expect(actual).toBe(expected);
+});
+
+test("should return 2 cases when given $4,800,000", () => {
+  const expected = 2;
+  const actual = howManyWholeCases(4800000);
+  expect(actual).toBe(expected);
+});
+
+// boundary testing $1 under $2,400,000
+test("should return 1 case when given $2,399,999", () => {
+  const expected = 1;
+  const actual = howManyWholeCases(2399999);
+  expect(actual).toBe(expected);
+});
+
+// boundary testing $1 over $2,400,000
+test("should return 2 cases when given $2,400,001", () => {
+  const expected = 2;
+  const actual = howManyWholeCases(2400001);
+  expect(actual).toBe(expected);
+});
 ```
-Room: REPLACE_ME_WITH_YOUR_ROOM_NUMBER
-Name: REPLACE_ME_WITH_YOUR_NAME
-Link: REPLACE_ME_WITH_A_LINK_TO_YOUR_PUBLIC_GITHUB_REPO_CONTAINING_THE_KATA
-Overview: REPLACE_ME_WITH_A_BRIEF_DESCRIPTION_OF_WHAT_YOUR_KATA_IS_ABOUT
+
+---
+
+Example of first function written to attempt the problem
+
+```js
+export function howManyWholeCases(number) {
+  // create a variable for how many $100 dollar bills fit in a case
+  const fullCase = 2400000;
+  // number divided by fullCase
+  const answer = number / fullCase;
+  return Math.round(answer);
+}
 ```
 
-If it's not public already, remember to change the visibility of your repository to public.
+This fails as it rounds to nearest integer - need to always round up
 
-### 🎫 Ticket 6 - Present you kata
+---
 
-Make sure you present your project in the markdown file - this will be assessed alongside your actual kata. Treat this as an asynchronous presentation - anything you would want to talk through (plans, brainstorming, final results, user feedback, etc) should go in here.
+Example of function that passes the test
 
-### 🎫 Ticket 7 - Complete katas from others
-
-To solve katas created by other bootcampers, first clone their repository using the shared link. `cd` into the folder, run `npm install` to get the dependencies, then implement a solution in main.js. Execute their test cases to validate your code against their requirements. Provide feedback on the clarity of their instructions, difficulty level, and effectiveness of the tests. Engaging with each other's challenges allows everyone to learn. Make sure to critique respectfully - creating a programming challenge is difficult!
-
-### 🎫 Bonus ticket - Upload to Codewars
-
-For those who completed the challenge of getting to 300 honor points on Codewars, there's a special challenge with the chance to win some prizes 🏆
-
-After testing your kata with others in the bootcamp, you can optionally publish it on Codewars itself by following their documentation for uploading user-generated content. This allows the challenge you created to reach an even wider audience of developers, but it will also be entered into our prize category and we will select a top 3 to win some coveted goodies 😎
-
-Submit your entry on the [learn platform](https://learn.schoolofcode.co.uk/path-player?courseid=qa&unit=65f2086cea83572ce4025ac6Unit).
+```js
+export function howManyWholeCases(number) {
+  // create a variable for how many $100 dollar bills fit in a case
+  const fullCase = 2400000;
+  // number divided by fullCase
+  const answer = number / fullCase;
+  return Math.ceil(answer);
+}
+```
